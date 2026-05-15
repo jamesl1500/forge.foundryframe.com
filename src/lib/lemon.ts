@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { getTierBySlug } from "@/lib/shop-data";
 
 export type DeliveryType = "download" | "github";
 
@@ -116,14 +117,40 @@ async function sendDeliveryEmail({
   }
 }
 
-async function inviteToGitHubOrg(email: string): Promise<void> {
+async function inviteToGitHubOrg(email: string, teamSlug: string): Promise<void> {
   const token = process.env.GITHUB_TOKEN;
   const org = process.env.GITHUB_ORG;
-  const teamId = process.env.GITHUB_TEAM_ID;
+  const fallbackTeamId = process.env.GITHUB_TEAM_ID;
 
   if (!token || !org) {
     console.info("[fulfillment] GitHub invite skipped: GITHUB_TOKEN or GITHUB_ORG is not configured");
     return;
+  }
+
+  // Resolve the team slug to a numeric ID (required by the org invitations API).
+  let resolvedTeamId: number | undefined;
+
+  if (teamSlug) {
+    const teamRes = await fetch(`https://api.github.com/orgs/${org}/teams/${teamSlug}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
+
+    if (teamRes.ok) {
+      const teamData = await teamRes.json() as { id?: number };
+      if (typeof teamData.id === "number") {
+        resolvedTeamId = teamData.id;
+      }
+    } else {
+      console.warn(`[fulfillment] Could not resolve GitHub team slug "${teamSlug}" — falling back to GITHUB_TEAM_ID`);
+    }
+  }
+
+  if (resolvedTeamId === undefined && fallbackTeamId) {
+    resolvedTeamId = Number(fallbackTeamId);
   }
 
   const response = await fetch(`https://api.github.com/orgs/${org}/invitations`, {
@@ -136,14 +163,14 @@ async function inviteToGitHubOrg(email: string): Promise<void> {
     },
     body: JSON.stringify({
       email,
-      ...(teamId ? { team_ids: [Number(teamId)] } : {}),
+      ...(resolvedTeamId !== undefined ? { team_ids: [resolvedTeamId] } : {}),
       role: "direct_member",
     }),
   });
 
   if (!response.ok) {
     const body = await response.text();
-    throw new Error(`GitHub invitation failed (${response.status}): ${body}`);
+    throw new Error(`GitHub invitation (team: ${teamSlug}) failed (${response.status}): ${body}`);
   }
 }
 
@@ -170,11 +197,16 @@ export async function fulfillOrder(params: {
     return;
   }
 
-  await inviteToGitHubOrg(email);
+  // Resolve the repo name and team slug from tier data; fall back to deliveryValue for backward compatibility.
+  const tier = getTierBySlug(categorySlug, tierSlug);
+  const repoName = tier?.githubRepo?.trim() || config.deliveryValue;
+  const teamSlug = tier?.githubTeamSlug?.trim() ?? "";
+
+  await inviteToGitHubOrg(email, teamSlug);
 
   await sendDeliveryEmail({
     to: email,
     subject: "Your FORGE GitHub access has been sent",
-    html: `<p>Thanks for your purchase.</p><p>We sent a GitHub organization invite for your repo access. Please check your GitHub notifications and email.</p><p>Order ID: ${orderId}</p>`,
+    html: `<p>Thanks for your purchase.</p><p>We sent a GitHub organization invite granting access to the <code>${repoName}</code> repository. Please check your GitHub notifications and email.</p><p>Order ID: ${orderId}</p>`,
   });
 }

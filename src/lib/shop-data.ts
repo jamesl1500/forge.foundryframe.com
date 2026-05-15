@@ -10,6 +10,8 @@ export type Tier = {
   timeline: string;
   support: string;
   license: string;
+  githubRepo: string;
+  githubTeamSlug: string;
 };
 
 export type Category = {
@@ -46,10 +48,12 @@ export const shopCategories: Category[] = [
         timeline: "Same-day setup",
         support: "7 days",
         license: "Single project",
+        githubRepo: "landing-page-spark",
+        githubTeamSlug: "customers-landingpagekits-spark",
       },
       {
         slug: "launch",
-        variantId: "",
+        variantId: "1657304",
         name: "Launch",
         price: "$149",
         tagline: "A complete conversion funnel",
@@ -59,6 +63,8 @@ export const shopCategories: Category[] = [
         timeline: "1-2 days",
         support: "14 days",
         license: "Single product",
+        githubRepo: "landing-page-launch",
+        githubTeamSlug: "customers-landingpagekits-launch",
       },
       {
         slug: "scale",
@@ -72,6 +78,8 @@ export const shopCategories: Category[] = [
         timeline: "2-3 days",
         support: "30 days",
         license: "Multi-campaign",
+        githubRepo: "landing-page-scale",
+        githubTeamSlug: "customers-landingpagekits-scale",
       },
     ],
     comparison: [
@@ -102,6 +110,8 @@ export const shopCategories: Category[] = [
         timeline: "Same-day setup",
         support: "7 days",
         license: "Single project",
+        githubRepo: "portfolio-core",
+        githubTeamSlug: "customers-portfoliowebsitekits-core",
       },
       {
         slug: "pro",
@@ -115,6 +125,8 @@ export const shopCategories: Category[] = [
         timeline: "1-2 days",
         support: "14 days",
         license: "Single brand",
+        githubRepo: "portfolio-pro",
+        githubTeamSlug: "customers-portfoliowebsitekits-pro",
       },
       {
         slug: "studio",
@@ -128,6 +140,8 @@ export const shopCategories: Category[] = [
         timeline: "2-3 days",
         support: "30 days",
         license: "Studio use",
+        githubRepo: "portfolio-studio",
+        githubTeamSlug: "customers-portfoliowebsitekits-studio",
       },
     ],
     comparison: [
@@ -158,6 +172,8 @@ export const shopCategories: Category[] = [
         timeline: "Same-day setup",
         support: "7 days",
         license: "Single site",
+        githubRepo: "blog-writer",
+        githubTeamSlug: "customers-blogwebsitekits-writer",
       },
       {
         slug: "publisher",
@@ -171,6 +187,8 @@ export const shopCategories: Category[] = [
         timeline: "1-2 days",
         support: "14 days",
         license: "Single publication",
+        githubRepo: "blog-publisher",
+        githubTeamSlug: "customers-blogwebsitekits-publisher",
       },
       {
         slug: "authority",
@@ -184,6 +202,8 @@ export const shopCategories: Category[] = [
         timeline: "2-3 days",
         support: "30 days",
         license: "Brand publication",
+        githubRepo: "blog-authority",
+        githubTeamSlug: "customers-blogwebsitekits-authority",
       },
     ],
     comparison: [
@@ -214,6 +234,8 @@ export const shopCategories: Category[] = [
         timeline: "1-2 days",
         support: "14 days",
         license: "Single product",
+        githubRepo: "saas-starter",
+        githubTeamSlug: "customers-saasfoundationkits-starter",
       },
       {
         slug: "growth",
@@ -227,6 +249,8 @@ export const shopCategories: Category[] = [
         timeline: "3-5 days",
         support: "30 days",
         license: "Single SaaS",
+        githubRepo: "saas-growth",
+        githubTeamSlug: "customers-saasfoundationkits-growth",
       },
       {
         slug: "scale",
@@ -240,6 +264,8 @@ export const shopCategories: Category[] = [
         timeline: "5-7 days",
         support: "45 days",
         license: "Commercial SaaS",
+        githubRepo: "saas-scale",
+        githubTeamSlug: "customers-saasfoundationkits-scale",
       },
     ],
     comparison: [
@@ -270,6 +296,8 @@ export const shopCategories: Category[] = [
         timeline: "1-2 days",
         support: "14 days",
         license: "Single store",
+        githubRepo: "ecommerce-catalog",
+        githubTeamSlug: "customers-ecommercefrontendkits-catalog",
       },
       {
         slug: "storefront",
@@ -283,6 +311,8 @@ export const shopCategories: Category[] = [
         timeline: "2-3 days",
         support: "30 days",
         license: "Single brand",
+        githubRepo: "ecommerce-storefront",
+        githubTeamSlug: "customers-ecommercefrontendkits-storefront",
       },
       {
         slug: "commerce-pro",
@@ -296,6 +326,8 @@ export const shopCategories: Category[] = [
         timeline: "4-6 days",
         support: "45 days",
         license: "Commercial store",
+        githubRepo: "ecommerce-commerce-pro",
+        githubTeamSlug: "customers-ecommercefrontendkits-commerce-pro",
       },
     ],
     comparison: [
