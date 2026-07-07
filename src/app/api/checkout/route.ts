@@ -1,17 +1,8 @@
 import { redirect } from "next/navigation";
+import Stripe from "stripe";
 import { getCategoryBySlug, getTierBySlug } from "@/lib/shop-data";
 
 export const runtime = "nodejs";
-
-function getRequiredEnv(name: string): string {
-  const value = process.env[name];
-
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-
-  return value;
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -29,7 +20,7 @@ export async function GET(request: Request) {
     return Response.json({ error: "Unknown category or tier" }, { status: 404 });
   }
 
-  if (!tierData.variantId.trim()) {
+  if (!tierData.priceId.trim()) {
     return Response.json(
       {
         error: "Tier is not configured for checkout yet",
@@ -39,75 +30,32 @@ export async function GET(request: Request) {
     );
   }
 
-  const storeId = getRequiredEnv("LEMONSQUEEZY_STORE_ID");
-  const apiKey = getRequiredEnv("LEMONSQUEEZY_API_KEY");
-  const appUrl = getRequiredEnv("NEXT_PUBLIC_APP_URL");
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
-  const payload = {
-    data: {
-      type: "checkouts",
-      attributes: {
-        checkout_data: {
-          custom: {
-            category,
-            tier,
-          },
-        },
-        product_options: {
-          redirect_url: `${appUrl}/shop/${category}/${tier}?paid=1`,
-        },
-      },
-      relationships: {
-        store: {
-          data: {
-            type: "stores",
-            id: storeId,
-          },
-        },
-        variant: {
-          data: {
-            type: "variants",
-            id: tierData.variantId,
-          },
-        },
-      },
-    },
-  };
+  if (!secretKey) {
+    throw new Error("Missing required environment variable: STRIPE_SECRET_KEY");
+  }
 
-  const response = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
-    method: "POST",
-    headers: {
-      Accept: "application/vnd.api+json",
-      "Content-Type": "application/vnd.api+json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(payload),
+  if (!appUrl) {
+    throw new Error("Missing required environment variable: NEXT_PUBLIC_APP_URL");
+  }
+
+  const stripe = new Stripe(secretKey);
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [{ price: tierData.priceId, quantity: 1 }],
+    success_url: `${appUrl}/shop/${category}/${tier}?paid=1`,
+    cancel_url: `${appUrl}/shop/${category}/${tier}`,
+    metadata: { category, tier },
+    customer_email: undefined,
+    billing_address_collection: "auto",
   });
 
-  if (!response.ok) {
-    const body = await response.text();
-    return Response.json(
-      {
-        error: "Unable to create Lemon Squeezy checkout",
-        detail: body,
-      },
-      { status: 502 }
-    );
+  if (!session.url) {
+    return Response.json({ error: "Stripe did not return a checkout URL" }, { status: 502 });
   }
 
-  const json = (await response.json()) as {
-    data?: {
-      attributes?: {
-        url?: string;
-      };
-    };
-  };
-
-  const checkoutUrl = json.data?.attributes?.url;
-
-  if (!checkoutUrl) {
-    return Response.json({ error: "Lemon Squeezy did not return a checkout URL" }, { status: 502 });
-  }
-
-  redirect(checkoutUrl);
+  redirect(session.url);
 }

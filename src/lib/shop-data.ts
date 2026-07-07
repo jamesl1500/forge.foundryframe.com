@@ -1,6 +1,6 @@
 export type Tier = {
   slug: string;
-  variantId: string;
+  priceId: string;
   name: string;
   price: string;
   tagline: string;
@@ -38,7 +38,7 @@ export const shopCategories: Category[] = [
     tiers: [
       {
         slug: "spark",
-        variantId: "1651895",
+        priceId: "price_1TqfKtQ3zhU7aQmjlV7ZSFeY",
         name: "Spark",
         price: "$79",
         tagline: "Single-page launch momentum",
@@ -53,7 +53,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "launch",
-        variantId: "1657304",
+        priceId: "price_1TZfrGQ3zhU7aQmjxMz6XNnA",
         name: "Launch",
         price: "$149",
         tagline: "A complete conversion funnel",
@@ -68,7 +68,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "scale",
-        variantId: "",
+        priceId: "price_1TqfjnQ3zhU7aQmjTSyIYpBY",
         name: "Scale",
         price: "$249",
         tagline: "Growth-ready marketing system",
@@ -100,7 +100,7 @@ export const shopCategories: Category[] = [
     tiers: [
       {
         slug: "core",
-        variantId: "",
+        priceId: "price_1TqgbWQ3zhU7aQmju3Bdyla8",
         name: "Core",
         price: "$69",
         tagline: "Clean online presence",
@@ -115,7 +115,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "pro",
-        variantId: "",
+        priceId: "price_1TqgcoQ3zhU7aQmjmm4lWaK3",
         name: "Pro",
         price: "$129",
         tagline: "Story-led portfolio",
@@ -130,7 +130,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "studio",
-        variantId: "",
+        priceId: "price_1TqgdEQ3zhU7aQmjGZRBoGV7",
         name: "Studio",
         price: "$229",
         tagline: "Agency-grade portfolio system",
@@ -162,7 +162,7 @@ export const shopCategories: Category[] = [
     tiers: [
       {
         slug: "writer",
-        variantId: "",
+        priceId: "price_1TqgelQ3zhU7aQmjr1jsLqzQ",
         name: "Writer",
         price: "$89",
         tagline: "Minimal publishing setup",
@@ -177,7 +177,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "publisher",
-        variantId: "",
+        priceId: "price_1TqgfNQ3zhU7aQmj3nJBkoUr",
         name: "Publisher",
         price: "$159",
         tagline: "Built for consistent publishing",
@@ -192,7 +192,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "authority",
-        variantId: "",
+        priceId: "price_1TqgfqQ3zhU7aQmj4ipF5JmN",
         name: "Authority",
         price: "$269",
         tagline: "SERP-oriented content system",
@@ -224,7 +224,7 @@ export const shopCategories: Category[] = [
     tiers: [
       {
         slug: "starter",
-        variantId: "",
+        priceId: "price_1TqgjWQ3zhU7aQmj6NineXXz",
         name: "Starter",
         price: "$199",
         tagline: "Authentication and app shell",
@@ -239,7 +239,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "growth",
-        variantId: "",
+        priceId: "price_1Tqgk1Q3zhU7aQmjjkmgdzdL",
         name: "Growth",
         price: "$399",
         tagline: "Core SaaS architecture",
@@ -254,7 +254,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "scale",
-        variantId: "",
+        priceId: "price_1TqgkMQ3zhU7aQmjVXBvqzpa",
         name: "Scale",
         price: "$699",
         tagline: "Production-oriented foundation",
@@ -286,7 +286,7 @@ export const shopCategories: Category[] = [
     tiers: [
       {
         slug: "catalog",
-        variantId: "",
+        priceId: "price_1TqgqzQ3zhU7aQmjpMDtw9Ke",
         name: "Catalog",
         price: "$129",
         tagline: "Launch your storefront fast",
@@ -301,7 +301,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "storefront",
-        variantId: "",
+        priceId: "price_1TqgrSQ3zhU7aQmj2gm50Xz7",
         name: "Storefront",
         price: "$249",
         tagline: "Conversion-optimized shopping flow",
@@ -316,7 +316,7 @@ export const shopCategories: Category[] = [
       },
       {
         slug: "commerce-pro",
-        variantId: "",
+        priceId: "price_1TqgrtQ3zhU7aQmj5t1YJv0l",
         name: "Commerce Pro",
         price: "$449",
         tagline: "Built for scale and retention",
